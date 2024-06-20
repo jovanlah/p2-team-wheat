@@ -1,0 +1,41 @@
+---
+title: Most Popular Messaging Apps by Country (June 2024)
+format:
+  poster-typst: 
+    size: "18x24" # Approximately A1 vertical
+    poster-authors: "Ho, J.W., Tan S.T, Soh M.L., Ng G.T, Lua Z.Z, Kim, B.J."
+    departments: "Information and Communication Technologies"
+    institution-logo: "./images/sit-logo.png"
+    # footer-text: "Information Visualization 2024"
+    # footer-emails: "2101708@sit.singaporetech.edu.sg"
+    footer-text: "Team Wheat 2024"
+    footer-url: "https://github.com"
+    footer-emails: "2101708,2100901,2102954,2102770,2101393,2101249"
+    footer-color: "F5DEB3"
+    
+    num-columns: "2"
+    univ-logo-scale: "100"
+    title-font-size: "36"
+    authors-font-size: "20"
+    univ-logo-column-size: "4"
+    title-column-size: "10"
+  
+
+execute:
+  echo: false
+
+---
+
+# Introduction
+
+# Previous Visualization
+
+# Suggested Improvements
+
+# Implementation
+
+# Improved Visualization
+
+# Further Suggestions for Interactivity
+
+# Conclusion
