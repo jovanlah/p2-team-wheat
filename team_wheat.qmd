@@ -28,13 +28,33 @@ execute:
 
 # Introduction
 
+The poster titled "Top Messaging Apps by Country" provides a global overview of the most popular messaging applications used across different regions. The data is visualized through a world map, color-coded to represent the dominant messaging app in each country. The apps included in this analysis are WhatsApp, Messenger, Viber, WeChat, Line, Telegram, imo, and KakaoTalk. This visualization is based on Google Play download data as of February 2023, with the source being Sinch Engage. The purpose of this poster is to highlight regional preferences for messaging apps, which can be valuable for understanding communication trends and market dynamics in different parts of the world.
+
 # Previous Visualization
 
+![Most Popular Messaging Apps by Country](./images/previous-visualization.jpg)
+[*https://engage.sinch.com/blog/most-popular-messaging-apps-in-the-world/*](https://engage.sinch.com/blog/most-popular-messaging-apps-in-the-world/)
+
+
 # Suggested Improvements
+
+1. **Add a Legend**: Ensure the legend is clear and visible, associating each color with the corresponding messaging app.
+
+2. **Color-Blind** Friendly Palette: Use a color-blind friendly palette to ensure the map is accessible to all viewers. Or you can use different patterns/shades instead of relying solely on color.
+
+3. **Clear Title and Description**: Update the title to be more descriptive, such as "Most Popular Messaging Apps by Country (June 2024)". Include a subtitle explaining the criteria for determining the most popular app.
+
+4. **Data Source and Date Visibility**: Place the data source and date information prominently near the title or in a footer to ensure it's easily visible.
+
+5. **Highlight Key Insights**: Add annotations or highlights to point out interesting patterns or notable exceptions in the data. E.g., highlight regions where less common apps like imo or Kakaotalk are the top choice.
+
+6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help users easily identify regions. Include country names or ISO codes to assist with identification.
 
 # Implementation
 
 # Improved Visualization
+
+![Most Popular Messaging Apps by Country](./images/improved-visualization.jpg)
 
 # Further Suggestions for Interactivity
 
