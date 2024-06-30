@@ -3,22 +3,14 @@ title: Most Popular Messaging Apps by Country (June 2024)
 format:
   poster-typst: 
     size: "33x23" # Approximately A1
-    poster-authors: "Ho, J.W., Tan S.T, Soh M.L., Ng G.T, Lua Z.Z, Kim, B.J."
+    poster-authors: "Team Wheat"
     departments: "Information and Communication Technologies"
     institution-logo: "./images/sit-logo.png"
-    # footer-text: "Information Visualization 2024"
-    # footer-emails: "2101708@sit.singaporetech.edu.sg"
-    footer-text: "Team Wheat 2024"
+    footer-text: "Information Visualization 2024"
     footer-url: "https://github.com/jovanlah/p2-team-wheat"
-    footer-emails: "2101708,2100901,2102954,2102770,2101393,2101249"
-    footer-color: "F5DEB3"
-    
-    univ-logo-scale: "100"
-    title-font-size: "36"
-    authors-font-size: "20"
+    footer-emails: "2101708,2100901,2102954,2102770,2101393,210124"
+    footer-color: "ebcfb2"
     univ-logo-column-size: "4"
-    title-column-size: "10"
-
 execute:
   echo: false
   warning: false
@@ -42,13 +34,13 @@ library(RColorBrewer)
 
 # Introduction
 
-The poster titled "Top Messaging Apps by Country" provides a global overview of the most popular messaging applications used across different regions. The data is visualized through a world map, color-coded to represent the dominant messaging app in each country. The apps included in this analysis are WhatsApp, Messenger, Viber, WeChat, Line, Telegram, imo, and KakaoTalk. This visualization is based on Google Play download data as of February 2023, with the source being Sinch Engage. The purpose of this poster is to highlight regional preferences for messaging apps, which can be valuable for understanding communication trends and market dynamics in different parts of the world.
+The poster titled "Top Messaging Apps by Country" provides a global overview of the most popular messaging applications used across different regions. The data is visualized through a world map, color-coded to represent the dominant messaging app in each country. The apps included in this analysis are WhatsApp, Messenger, Viber, WeChat, Line, Telegram, imo, and KakaoTalk. This visualization is based on Google Play download data as of February 2023, with the source being Sinch Engage[^previous_visualization]. The purpose of this poster is to highlight regional preferences for messaging apps, which can be valuable for understanding communication trends and market dynamics in different parts of the world.
+
+[^previous_visualization]: https://engage.sinch.com/blog/most-popular-messaging-apps-in-the-world/
 
 # Previous Visualization
 
-![Most Popular Messaging Apps by Country](./images/previous-visualization.jpg){width=100%}
-[*https://engage.sinch.com/blog/most-popular-messaging-apps-in-the-world/*](https://engage.sinch.com/blog/most-popular-messaging-apps-in-the-world/)
-
+![Most Popular Messaging Apps by Country](./images/previous-visualization.jpg)
 
 # Suggested Improvements
 
@@ -64,11 +56,44 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 
 6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help users easily identify regions. Include country names or ISO codes to assist with identification.
 
+# Strengths
+
+1. **Clear Title**: The title "Top messaging apps by country" is concise and immediately informs the viewer of the poster's content.
+   
+2. **Global Coverage**: The map covers the entire world, providing a comprehensive view of the data across different regions.
+  
+3. **Color-Coding and Legend**: The use of color-coding to represent different messaging apps is a useful visual aid. The legend on the left side provides a quick reference for understanding which color corresponds to which app.
+
 # Implementation
+
+**Data** 
+
+Most popular messaging apps per country data were obtained from Eager Nomad[^eager_nomand]. The missing data were obtained from Appfigures[^appfigures] and Similar Web[^similar_web].
+
+**Software** 
+
+We used the Quarto publication framework and the R programming language, along with the following third-party packages: 
+
+1. Read imported data 
+
+2. `tidyverse` is used to filter data, join data frames, and transform spatial data.
+
+3. `sf` is used for handling and analyzing spatial data
+
+4. `scales` for scaling and formatting data for visualization, such as adjusting Earth’s boundaries
+
+5. `RColorBrewer` for selecting colour scheme for the map
+
+[^eager_nomand]: https://eagernomad.com/most-popular-messaging-apps-by-country/
+
+[^appfigures]: https://appfigures.com/top-apps/google-play/c%C3%B4te-d%E2%80%99ivoire/communication?profile=product.41279583613
+
+[^similar_web]: https://www.similarweb.com/top-apps/apple/burkina-faso/social-networking/
+
 
 # Improved Visualization
 ```{r, fig.width=10, fig.height=6}
-#read messaging app popularity csv
+# read messaging app popularity csv
 messaging_app_popularity <- read_csv("./data/messaging-app-popularity.csv")
 
 # Load the World data from the tmap package
@@ -79,76 +104,76 @@ countries_to_exclude <- c("Antarctic Lands", "Antarctica", "Antarctic Lands")
 
 # Exclude specified countries from world_map
 world_map <- World %>%
-  filter(!(name %in% countries_to_exclude))
+    filter(!(name %in% countries_to_exclude))
 
 # Display the filtered world_map
 # print(world_map)
 
 # Left-join the World object with the messaging_app_popularity data frame
 map_data_sf <- world_map %>%
-  left_join(messaging_app_popularity, by = c("name" = "Country")) %>%
-  select(code = iso_a3, area, geometry, Messaging_App)
+    left_join(messaging_app_popularity, by = c("name" = "Country")) %>%
+    select(code = iso_a3, area, geometry, Messaging_App)
 map_data_sf <- st_transform(map_data_sf, crs = 4326)
 
 # Add a column for labeling the 20 largest countries by land area
 map_data_sf <- map_data_sf %>%
-  arrange(desc(area)) %>%
-  mutate(country_label = if_else(row_number() <= 20, code, ""))
+    arrange(desc(area)) %>%
+    mutate(country_label = if_else(row_number() <= 20, code, ""))
 
 # Create a simple feature collection for the Earth's boundaries (excluding Antarctica)
 earth <- st_polygon(
-  x = list(
-    cbind(
-      c(-180, 180, 180, -180, -180),  # Adjust the horizontal extent as needed
-      c(-60, -60, 90, 90, -60)  # Adjust the vertical extent as needed
+    x = list(
+        cbind(
+            c(-180, 180, 180, -180, -180), # Adjust the horizontal extent as needed
+            c(-60, -60, 90, 90, -60) # Adjust the vertical extent as needed
+        )
     )
-  )
 ) %>%
-  st_sfc() %>%
-  st_set_crs(4326) %>%
-  st_as_sf()
+    st_sfc() %>%
+    st_set_crs(4326) %>%
+    st_as_sf()
 
 # Create the base map with world boundaries
 gg_world_boundary <- ggplot() +
-  geom_sf(data = earth, fill = "aliceblue") +
-  geom_sf(color = NA) +
-  theme_void() +
-  theme(panel.grid = element_line(color = NA),
+    geom_sf(data = earth, fill = "aliceblue") +
+    geom_sf(color = NA) +
+    theme_void() +
+    theme(
+        panel.grid = element_line(color = NA),
         panel.background = element_blank(),
-        panel.ontop = TRUE)
+        panel.ontop = TRUE
+    )
 
 # Create the choropleth map with binned color scale and clear country borders
 choropleth_map <- gg_world_boundary +
-  geom_sf(data = map_data_sf, aes(fill = Messaging_App), color = NA) +  # Main fill layer
-  geom_sf(data = map_data_sf, fill = NA, color = "black", size = 0.1) +  # Border layer
-  scale_fill_brewer(palette = "Set1") +  # Using RColorBrewer palette
-  geom_sf_text(data = map_data_sf, aes(label = country_label), size = 3, color ="white") +
-  scale_color_identity() +
-  labs(title = "Most Popular Messaging Apps by Country",
-       subtitle = "Most active users on each messaging app (for Android and iPhones)",
-       caption = "Source: EagerNomad") +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
-        plot.subtitle = element_text(hjust = 0.5, margin = margin(b = 10, t = 5)),  # Add padding below the subtitle
+    geom_sf(data = map_data_sf, aes(fill = Messaging_App), color = NA) + # Main fill layer
+    geom_sf(data = map_data_sf, fill = NA, color = "black", size = 0.1) + # Border layer
+    scale_fill_brewer(palette = "Set1") + # Using RColorBrewer palette
+    geom_sf_text(data = map_data_sf, aes(label = country_label), size = 3, color = "white") +
+    scale_color_identity() +
+    labs(
+        title = "Most Popular Messaging Apps by Country",
+        subtitle = "Most active users on each messaging app (for Android and iPhones)",
+        caption = "Source: EagerNomad"
+    ) +
+    theme(
+        plot.title = element_text(hjust = 0.5, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, margin = margin(b = 10, t = 5)), # Add padding below the subtitle
         legend.position = "top",
         legend.title = element_blank(),
         legend.key.width = unit(3, "lines"),
         plot.caption = element_text(hjust = 1, margin = margin(t = 10, r = 10, b = 10, l = 10)),
-        axis.text = element_blank(),  # Remove axis text
+        axis.text = element_blank(), # Remove axis text
         axis.ticks = element_blank(), # Remove axis ticks
-        axis.title = element_blank()) # Remove axis titles
+        axis.title = element_blank()
+    ) # Remove axis titles
 
 # Display the map
 print(choropleth_map)
-
 ```
-
-
-![Most Popular Messaging Apps by Country](./images/improved-visualization.jpg){width=100%}
-
 
 # Further Suggestions for Interactivity
 
+Since our visualization was intended for a real-life poster, interactive features were not implemented. However, if visualized in an HTML document, interactive elements could enhance user engagement. Users could hover over or click on countries to see detailed information about the top messaging app in that region, including usage statistics and growth trends. A time slider could show changes in app popularity over time, while comparison tools would enable side-by-side analysis of different regions. An interactive legend that highlights specific apps' dominance globally when clicked, and ensuring mobile compatibility, would make the data more accessible. Dynamic charts and graphs that update based on user interactions with the map would provide clearer data representation, and offering the poster in multiple languages would cater to a diverse audience.
+
 # Conclusion
-
-
-## Reference
