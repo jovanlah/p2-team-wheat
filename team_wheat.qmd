@@ -136,7 +136,7 @@ main_plot <- ggplot() +
     geom_sf_text(data = world_data %>% slice_max(area, n = 15), aes(label = iso_a3), size = 2, color = "white") +
     scale_fill_manual(values = app_colors) +
     labs(
-        title = "Most Popular Messaging Apps by Country",
+        title = "Most Popular Messaging Apps by Country (June 2024)",
         subtitle = "Most active users on each messaging app (for Android and iPhones)",
         caption = "Sources: EagerNomad, Appfigures, SimilarWeb",
     ) +
