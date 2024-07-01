@@ -98,7 +98,7 @@ app_colors <- c(
     "Facebook Messenger" = paired_colors[1],
     "WhatsApp" = paired_colors[2],
     "Telegram" = paired_colors[3],
-    "Viber" = paired_colors[3],
+    "Viber" = paired_colors[4],
     "WeChat" = paired_colors[5],
     "LINE" = paired_colors[6],
     "KakaoTalk" = paired_colors[7],
