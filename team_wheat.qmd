@@ -139,11 +139,13 @@ choropleth_map <- ggplot() +
     geom_sf(data = map_data_sf, aes(fill = Messaging_App)) + # Main fill layer
     geom_sf(data = map_data_sf, fill = NA, color = "black", size = 0.1) + # Border layer
     scale_fill_brewer(palette = "Paired", direction = "-1") + # Using RColorBrewer palette
+    # show top 10 geom_sf_text for the country with the most area
+    geom_sf_text(data = map_data_sf %>% slice_max(area, n = 15), aes(label = code), size = 2, color = "white") +
     scale_color_identity() +
     labs(
         title = "Most Popular Messaging Apps by Country",
         subtitle = "Most active users on each messaging app (for Android and iPhones)",
-        caption = "Source: EagerNomad"
+        caption = "Sources: EagerNomad, Appfigures, SimilarWeb",
     ) +
     theme(
         plot.title = element_text(hjust = 0.5, face = "bold"),
