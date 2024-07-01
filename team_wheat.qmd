@@ -25,10 +25,10 @@ knitr:
 
 library(knitr)
 library(readr)
-library(tmap)
 library(tidyverse)
 library(sf)
-library(scales)
+library(tmap)
+library(cowplot)
 library(RColorBrewer)
 ```
 
@@ -42,27 +42,21 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 
 ![Most Popular Messaging Apps by Country](./images/previous-visualization.jpg)
 
+
+# Strengths of original visualization
+
+1. **Clear Title**: The title "Top messaging apps by country" is concise and immediately informs the viewer of the poster's content.
+2. **Global Coverage**: The map covers the entire world, providing a comprehensive view of the data across different regions.
+3. **Color-Coding and Legend**: The use of color-coding to represent different messaging apps is a useful visual aid. The legend on the left side provides a quick reference for understanding which color corresponds to which app.
+
 # Suggested Improvements
 
 1. **Add a Legend**: Ensure the legend is clear and visible, associating each color with the corresponding messaging app.
-
 2. **Color-Blind** Friendly Palette: Use a color-blind friendly palette to ensure the map is accessible to all viewers. Or you can use different patterns/shades instead of relying solely on color.
-
 3. **Clear Title and Description**: Update the title to be more descriptive, such as "Most Popular Messaging Apps by Country (June 2024)". Include a subtitle explaining the criteria for determining the most popular app.
-
 4. **Data Source and Date Visibility**: Place the data source and date information prominently near the title or in a footer to ensure it's easily visible.
-
 5. **Highlight Key Insights**: Add annotations or highlights to point out interesting patterns or notable exceptions in the data. E.g., highlight regions where less common apps like imo or Kakaotalk are the top choice.
-
 6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help users easily identify regions. Include country names or ISO codes to assist with identification.
-
-# Strengths
-
-1. **Clear Title**: The title "Top messaging apps by country" is concise and immediately informs the viewer of the poster's content.
-   
-2. **Global Coverage**: The map covers the entire world, providing a comprehensive view of the data across different regions.
-  
-3. **Color-Coding and Legend**: The use of color-coding to represent different messaging apps is a useful visual aid. The legend on the left side provides a quick reference for understanding which color corresponds to which app.
 
 # Implementation
 
@@ -75,13 +69,9 @@ Most popular messaging apps per country data were obtained from Eager Nomad[^eag
 We used the Quarto publication framework and the R programming language, along with the following third-party packages: 
 
 1. Read imported data 
-
 2. `tidyverse` is used to filter data, join data frames, and transform spatial data.
-
 3. `sf` is used for handling and analyzing spatial data
-
 4. `scales` for scaling and formatting data for visualization, such as adjusting Earth’s boundaries
-
 5. `RColorBrewer` for selecting colour scheme for the map
 
 [^eager_nomand]: https://eagernomad.com/most-popular-messaging-apps-by-country/
@@ -92,56 +82,59 @@ We used the Quarto publication framework and the R programming language, along w
 
 
 # Improved Visualization
-```{r, fig.width=10, fig.height=6}
-# read messaging app popularity csv
-messaging_app_popularity <- read_csv("./data/messaging-app-popularity.csv")
+```{r, fig.width=10, fig.height=7}
+# Load the dataset
+data <- read.csv("./data/messaging-app-popularity.csv")
 
-# Load the World data from the tmap package
 data(World)
+
+# Data preprocessing
+data <- data %>%
+    rename(country = Country, app = Messaging_App)
+
+# get Paired color palette
+paired_colors <- RColorBrewer::brewer.pal(9, "Paired")
+app_colors <- c(
+    "Facebook Messenger" = paired_colors[1],
+    "WhatsApp" = paired_colors[2],
+    "Telegram" = paired_colors[3],
+    "Viber" = paired_colors[3],
+    "WeChat" = paired_colors[5],
+    "LINE" = paired_colors[6],
+    "KakaoTalk" = paired_colors[7],
+    "Zalo" = paired_colors[8],
+    "ICQ" = paired_colors[9]
+)
+
+# Calculate popularity metric
+total_countries <- n_distinct(data$country)
+popularity <- data %>%
+    group_by(app) %>%
+    summarise(count = n()) %>%
+    mutate(
+        size = scales::rescale(count, to = c(3, 10)),
+        percentage = (count / total_countries) * 100
+    ) %>%
+    arrange(desc(count))
 
 # Define the countries you want to exclude
 countries_to_exclude <- c("Antarctic Lands", "Antarctica", "Antarctic Lands")
 
-# Exclude specified countries from world_map
-world_map <- World %>%
-    filter(!(name %in% countries_to_exclude))
+# Merge with messaging app data
+world_data <- World %>%
+    filter(!(name %in% countries_to_exclude)) %>%
+    left_join(data, data, by = c("name" = "country"))
 
-# Display the filtered world_map
-# print(world_map)
+# Sort the levels of app based on popularity
+world_data$app <- factor(world_data$app, levels = popularity$app)
 
-# Left-join the World object with the messaging_app_popularity data frame
-map_data_sf <- world_map %>%
-    left_join(messaging_app_popularity, by = c("name" = "Country")) %>%
-    select(code = iso_a3, area, geometry, Messaging_App)
-map_data_sf <- st_transform(map_data_sf, crs = 4326)
-
-# Add a column for labeling the 20 largest countries by land area
-map_data_sf <- map_data_sf %>%
-    arrange(desc(area)) %>%
-    mutate(country_label = if_else(row_number() <= 20, code, ""))
-
-# Create a simple feature collection for the Earth's boundaries (excluding Antarctica)
-earth <- st_polygon(
-    x = list(
-        cbind(
-            c(-180, 180, 180, -180, -180), # Adjust the horizontal extent as needed
-            c(-60, -60, 90, 90, -60) # Adjust the vertical extent as needed
-        )
-    )
-) %>%
-    st_sfc() %>%
-    st_set_crs(4326) %>%
-    st_as_sf()
-
-# Create the choropleth map with binned color scale and clear country borders
-choropleth_map <- ggplot() +
-    theme_void() + # Remove background and gridlines
-    geom_sf(data = map_data_sf, aes(fill = Messaging_App)) + # Main fill layer
-    geom_sf(data = map_data_sf, fill = NA, color = "black", size = 0.1) + # Border layer
-    scale_fill_brewer(palette = "Paired", direction = "-1") + # Using RColorBrewer palette
-    # show top 10 geom_sf_text for the country with the most area
-    geom_sf_text(data = map_data_sf %>% slice_max(area, n = 15), aes(label = code), size = 2, color = "white") +
-    scale_color_identity() +
+# Create the main plot
+main_plot <- ggplot() +
+    theme_void() +
+    geom_sf(data = world_data, aes(fill = app)) + # Main fill layer
+    geom_sf(data = world_data, fill = NA, color = "black", size = 0.1) + # Border layer
+    geom_sf_text(data = world_data %>% slice_max(area, n = 15), aes(label = iso_a3), size = 2, color = "white") +
+    scale_fill_manual(values = app_colors) +
     labs(
         title = "Most Popular Messaging Apps by Country",
         subtitle = "Most active users on each messaging app (for Android and iPhones)",
@@ -159,8 +152,27 @@ choropleth_map <- ggplot() +
         axis.title = element_blank()
     ) # Remove axis titles
 
-# Display the map
-print(choropleth_map)
+# Create the circle legend plot with percentages inside the circles
+legend_plot <- ggplot(popularity, aes(x = 1, y = reorder(app, count), size = size, color = app, fill = app)) +
+    geom_point(shape = 21, color = "white") +
+    geom_text(aes(label = paste0(round(percentage, 1), "%")), color = "white", size = 3) +
+    scale_size(range = c(10, 20)) +
+    scale_fill_manual(values = app_colors) +
+    theme_void() +
+    theme(
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()
+    ) +
+    guides(size = guide_legend(title = "Popularity", override.aes = list(shape = 21)))
+
+# Combine the plots
+final_plot <- ggdraw() +
+    draw_plot(main_plot, 0, 0, 1, 1) +
+    draw_plot(legend_plot, 0.87, 0.22, 0.15, 0.7)
+
+print(final_plot)
 ```
 
 # Further Suggestions for Interactivity
