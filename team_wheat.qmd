@@ -133,23 +133,12 @@ earth <- st_polygon(
     st_set_crs(4326) %>%
     st_as_sf()
 
-# Create the base map with world boundaries
-gg_world_boundary <- ggplot() +
-    geom_sf(data = earth, fill = "aliceblue") +
-    geom_sf(color = NA) +
-    theme_void() +
-    theme(
-        panel.grid = element_line(color = NA),
-        panel.background = element_blank(),
-        panel.ontop = TRUE
-    )
-
 # Create the choropleth map with binned color scale and clear country borders
-choropleth_map <- gg_world_boundary +
-    geom_sf(data = map_data_sf, aes(fill = Messaging_App), color = NA) + # Main fill layer
+choropleth_map <- ggplot() +
+    theme_void() + # Remove background and gridlines
+    geom_sf(data = map_data_sf, aes(fill = Messaging_App)) + # Main fill layer
     geom_sf(data = map_data_sf, fill = NA, color = "black", size = 0.1) + # Border layer
-    scale_fill_brewer(palette = "Set1") + # Using RColorBrewer palette
-    geom_sf_text(data = map_data_sf, aes(label = country_label), size = 3, color = "white") +
+    scale_fill_brewer(palette = "Paired", direction = "-1") + # Using RColorBrewer palette
     scale_color_identity() +
     labs(
         title = "Most Popular Messaging Apps by Country",
@@ -162,7 +151,7 @@ choropleth_map <- gg_world_boundary +
         legend.position = "top",
         legend.title = element_blank(),
         legend.key.width = unit(3, "lines"),
-        plot.caption = element_text(hjust = 1, margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        plot.caption = element_text(hjust = 1, margin = margin(r = 35)),
         axis.text = element_blank(), # Remove axis text
         axis.ticks = element_blank(), # Remove axis ticks
         axis.title = element_blank()
