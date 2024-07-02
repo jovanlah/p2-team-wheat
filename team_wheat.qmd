@@ -51,12 +51,12 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 
 # Suggested Improvements
 
-1. **Add a Legend**: Ensure the legend is clear and visible, associating each color with the corresponding messaging app.
-2. **Color-Blind** Friendly Palette: Use a color-blind friendly palette to ensure the map is accessible to all viewers. Or you can use different patterns/shades instead of relying solely on color.
-3. **Clear Title and Description**: Update the title to be more descriptive, such as "Most Popular Messaging Apps by Country (June 2024)". Include a subtitle explaining the criteria for determining the most popular app.
-4. **Data Source and Date Visibility**: Place the data source and date information prominently near the title or in a footer to ensure it's easily visible.
-5. **Highlight Key Insights**: Add annotations or highlights to point out interesting patterns or notable exceptions in the data. E.g., highlight regions where less common apps like imo or Kakaotalk are the top choice.
-6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help users easily identify regions. Include country names or ISO codes to assist with identification.
+1. **Enhance Legend Clarity**: The previous visualization uses a colour-coded map corresponding to the application icons colours in the legend. Several icons shared similar colours, leading to confusion about which colour was associated with each application. Replace the icons in the legend with distinct colours to improve visual clarity and differentiation.
+2. **Colour-Blind Friendly Palette**: Use a colour-blind friendly palette to ensure the map is accessible to all viewers. The colour palette should be chosen from the qualitative schemes as they are best suited to representing nominal or categorical data (like message applications).
+3. **Clear Title and Description**: Update the title to be more descriptive, such as "Most Popular Messaging Apps by Country (June 2024)". Include a subtitle explaining the criteria for determining the most popular application.
+4. **Data Source Visibility**: Place the data source information more prominently in the footer to ensure it's easily visible.
+5. **Include Scaled Circle Legend**: Add a circle legend plot in corresponding legend colours, scaled to the percentage representing overall application popularity, for better visual representation of application usage.
+6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help viewers easily identify regions. Include ISO country codes to assist with identification.
 
 # Implementation
 
