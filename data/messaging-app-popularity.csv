@@ -16,7 +16,7 @@ Belize,Facebook Messenger
 Benin,WhatsApp
 Bhutan,WhatsApp
 Bolivia,Facebook Messenger
-Bosnia and Herzegovina,Viber
+Bosnia and Herz.,Viber
 Botswana,Facebook Messenger
 Brazil,WhatsApp
 Brunei,WhatsApp
@@ -35,14 +35,15 @@ Cote d'Ivoire,WhatsApp
 Costa Rica,Telegram
 Croatia,WhatsApp
 Cuba,Facebook Messenger
-Czech Republic,WhatsApp
+Czech Rep.,WhatsApp
 Cyprus,WhatsApp
+N. Cyprus,WhatsApp
 Denmark,Facebook Messenger
 Dem. Rep. Congo,WhatsApp
 Congo,WhatsApp
 Djibouti,WhatsApp
-Dominican Republic,WhatsApp
-East Timor,WhatsApp
+Dominican Rep.,WhatsApp
+Timor-Leste,WhatsApp
 Ecuador,WhatsApp
 Egypt,WhatsApp
 El Salvador,WhatsApp
@@ -58,7 +59,9 @@ Ghana,WhatsApp
 Greece,Viber
 Greenland,Facebook Messenger
 Guatemala,WhatsApp
+Guinea-Bissau,WhatsApp
 Guinea,WhatsApp
+Eq. Guinea,WhatsApp
 Guyana,WhatsApp
 Honduras,Facebook Messenger
 Hong Kong,WhatsApp
@@ -78,7 +81,7 @@ Kazakhstan,WhatsApp
 Kenya,WhatsApp
 Kuwait,WhatsApp
 Kyrgyzstan,WhatsApp
-Laos,WhatsApp
+Lao PDR,WhatsApp
 Latvia,WhatsApp
 Lebanon,WhatsApp
 Liberia,WhatsApp
@@ -138,6 +141,7 @@ Suriname,WhatsApp
 Sudan,WhatsApp
 S. Sudan,WhatsApp
 Sweden,Facebook Messenger
+Swaziland,WhatsApp
 Switzerland,WhatsApp
 Syria,WhatsApp
 Scotland,WhatsApp
@@ -151,8 +155,8 @@ Turkey,WhatsApp
 Turkmenistan,ICQ
 Uganda,WhatsApp
 Ukraine,Viber
-United Arab Emirates (UAE),WhatsApp
-United Kingdom (UK),WhatsApp
+United Arab Emirates,WhatsApp
+United Kingdom,WhatsApp
 United States,Facebook Messenger
 Uruguay,WhatsApp
 Uzbekistan,Telegram
