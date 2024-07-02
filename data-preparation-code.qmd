@@ -1,0 +1,519 @@
+---
+title: "data-preparation"
+format: html
+editor: visual
+---
+
+```{r}
+#import libraries
+library(rvest)
+library(dplyr)
+library(readr)
+```
+
+```{r}
+# Most Popular Messaging Apps by Country Data to be extracted
+html_content <- '<table id="tablepress-2" class="tablepress tablepress-id-2">
+<thead>
+<tr class="row-1 odd">
+	<th class="column-1">Country</th><th class="column-2">Most Popular App (By Active Users)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-2 even">
+	<td class="column-1">Afghanistan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-3 odd">
+	<td class="column-1">Albania</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-4 even">
+	<td class="column-1">Algeria</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-5 odd">
+	<td class="column-1">Angola</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-6 even">
+	<td class="column-1">Argentina</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-7 odd">
+	<td class="column-1">Armenia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-8 even">
+	<td class="column-1">Australia</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-9 odd">
+	<td class="column-1">Austria</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-10 even">
+	<td class="column-1">Azerbaijan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-11 odd">
+	<td class="column-1">Bahamas</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-12 even">
+	<td class="column-1">Bangladesh</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-13 odd">
+	<td class="column-1">Belarus</td><td class="column-2">Telegram</td>
+</tr>
+<tr class="row-14 even">
+	<td class="column-1">Belgium</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-15 odd">
+	<td class="column-1">Belize</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-16 even">
+	<td class="column-1">Benin</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-17 odd">
+	<td class="column-1">Bhutan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-18 even">
+	<td class="column-1">Bolivia</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-19 odd">
+	<td class="column-1">Bosnia and Herzegovina</td><td class="column-2">*Viber</td>
+</tr>
+<tr class="row-20 even">
+	<td class="column-1">Botswana</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-21 odd">
+	<td class="column-1">Brazil</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-22 even">
+	<td class="column-1">Brunei</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-23 odd">
+	<td class="column-1">Bulgaria</td><td class="column-2">Viber</td>
+</tr>
+<tr class="row-24 even">
+	<td class="column-1">Burundi</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-25 odd">
+	<td class="column-1">Cambodia</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-26 even">
+	<td class="column-1">Cameroon</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-27 odd">
+	<td class="column-1">Canada</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-28 even">
+	<td class="column-1">Chad</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-29 odd">
+	<td class="column-1">Chile</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-30 even">
+	<td class="column-1">China</td><td class="column-2">WeChat</td>
+</tr>
+<tr class="row-31 odd">
+	<td class="column-1">Columbia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-32 even">
+	<td class="column-1">Costa Rica</td><td class="column-2">*Telegram</td>
+</tr>
+<tr class="row-33 odd">
+	<td class="column-1">Croatia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-34 even">
+	<td class="column-1">Cuba</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-35 odd">
+	<td class="column-1">Czech Republic</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-36 even">
+	<td class="column-1">Cyprus</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-37 odd">
+	<td class="column-1">Denmark</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-38 even">
+	<td class="column-1">Djibouti</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-39 odd">
+	<td class="column-1">Dominican Republic</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-40 even">
+	<td class="column-1">East Timor</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-41 odd">
+	<td class="column-1">Ecuador</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-42 even">
+	<td class="column-1">Egypt</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-43 odd">
+	<td class="column-1">El Salvador</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-44 even">
+	<td class="column-1">Estonia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-45 odd">
+	<td class="column-1">Fiji</td><td class="column-2">*Viber</td>
+</tr>
+<tr class="row-46 even">
+	<td class="column-1">Finland</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-47 odd">
+	<td class="column-1">France</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-48 even">
+	<td class="column-1">Gabon</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-49 odd">
+	<td class="column-1">Georgia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-50 even">
+	<td class="column-1">Germany</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-51 odd">
+	<td class="column-1">Ghana</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-52 even">
+	<td class="column-1">Greece</td><td class="column-2">Viber</td>
+</tr>
+<tr class="row-53 odd">
+	<td class="column-1">Guatemala</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-54 even">
+	<td class="column-1">Guinea</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-55 odd">
+	<td class="column-1">Guyana</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-56 even">
+	<td class="column-1">Honduras</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-57 odd">
+	<td class="column-1">Hong Kong</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-58 even">
+	<td class="column-1">Hungary</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-59 odd">
+	<td class="column-1">Iceland</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-60 even">
+	<td class="column-1">India</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-61 odd">
+	<td class="column-1">Indonesia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-62 even">
+	<td class="column-1">Iran</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-63 odd">
+	<td class="column-1">Iraq</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-64 even">
+	<td class="column-1">Ireland</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-65 odd">
+	<td class="column-1">Israel</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-66 even">
+	<td class="column-1">Italy</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-67 odd">
+	<td class="column-1">Jamaica</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-68 even">
+	<td class="column-1">Japan</td><td class="column-2">LINE</td>
+</tr>
+<tr class="row-69 odd">
+	<td class="column-1">Jordan</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-70 even">
+	<td class="column-1">Kazakhstan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-71 odd">
+	<td class="column-1">Kenya</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-72 even">
+	<td class="column-1">Kuwait</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-73 odd">
+	<td class="column-1">Kyrgyzstan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-74 even">
+	<td class="column-1">Laos</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-75 odd">
+	<td class="column-1">Latvia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-76 even">
+	<td class="column-1">Lebanon</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-77 odd">
+	<td class="column-1">Liberia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-78 even">
+	<td class="column-1">Libya</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-79 odd">
+	<td class="column-1">Lithuania</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-80 even">
+	<td class="column-1">Luxembourg</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-81 odd">
+	<td class="column-1">Macau</td><td class="column-2">WeChat</td>
+</tr>
+<tr class="row-82 even">
+	<td class="column-1">Malaysia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-83 odd">
+	<td class="column-1">Mali</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-84 even">
+	<td class="column-1">Mauritania</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-85 odd">
+	<td class="column-1">Mauritius</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-86 even">
+	<td class="column-1">Mexico</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-87 odd">
+	<td class="column-1">Moldova</td><td class="column-2">*Viber</td>
+</tr>
+<tr class="row-88 even">
+	<td class="column-1">Mongolia</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-89 odd">
+	<td class="column-1">Morocco</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-90 even">
+	<td class="column-1">Mozambique</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-91 odd">
+	<td class="column-1">Myanmar</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-92 even">
+	<td class="column-1">Namibia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-93 odd">
+	<td class="column-1">Nepal</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-94 even">
+	<td class="column-1">Netherlands</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-95 odd">
+	<td class="column-1">New Zealand</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-96 even">
+	<td class="column-1">Nicaragua</td><td class="column-2">*Telegram</td>
+</tr>
+<tr class="row-97 odd">
+	<td class="column-1">Niger</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-98 even">
+	<td class="column-1">Nigeria</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-99 odd">
+	<td class="column-1">Norway</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-100 even">
+	<td class="column-1">North Korea</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-101 odd">
+	<td class="column-1">Oman</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-102 even">
+	<td class="column-1">Pakistan</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-103 odd">
+	<td class="column-1">* Palestine</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-104 even">
+	<td class="column-1">Panama</td><td class="column-2">*Telegram</td>
+</tr>
+<tr class="row-105 odd">
+	<td class="column-1">Papua New Guinea</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-106 even">
+	<td class="column-1">Paraguay</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-107 odd">
+	<td class="column-1">Peru</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-108 even">
+	<td class="column-1">Philippines</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-109 odd">
+	<td class="column-1">Poland</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-110 even">
+	<td class="column-1">Portugal</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-111 odd">
+	<td class="column-1">Puerto Rico</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-112 even">
+	<td class="column-1">Qatar</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-113 odd">
+	<td class="column-1">Romania</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-114 even">
+	<td class="column-1">Russia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-115 odd">
+	<td class="column-1">Rwanda</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-116 even">
+	<td class="column-1">Saudi Arabia</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-117 odd">
+	<td class="column-1">Senegal</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-118 even">
+	<td class="column-1">Serbia</td><td class="column-2">*Viber</td>
+</tr>
+<tr class="row-119 odd">
+	<td class="column-1">Sierra Leone</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-120 even">
+	<td class="column-1">Singapore</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-121 odd">
+	<td class="column-1">Slovakia</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-122 even">
+	<td class="column-1">Slovenia</td><td class="column-2">*Viber</td>
+</tr>
+<tr class="row-123 odd">
+	<td class="column-1">Somalia</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-124 even">
+	<td class="column-1">Somaliland</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-125 odd">
+	<td class="column-1">South Africa</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-126 even">
+	<td class="column-1">South Korea</td><td class="column-2">KakaoTalk</td>
+</tr>
+<tr class="row-127 odd">
+	<td class="column-1">Spain</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-128 even">
+	<td class="column-1">Sri Lanka</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-129 odd">
+	<td class="column-1">Suriname</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-130 even">
+	<td class="column-1">Sweden</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-131 odd">
+	<td class="column-1">Switzerland</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-132 even">
+	<td class="column-1">Syria</td><td class="column-2">No Data</td>
+</tr>
+<tr class="row-133 odd">
+	<td class="column-1">Taiwan</td><td class="column-2">LINE</td>
+</tr>
+<tr class="row-134 even">
+	<td class="column-1">Tajikistan</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-135 odd">
+	<td class="column-1">Tanzania</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-136 even">
+	<td class="column-1">Thailand</td><td class="column-2">LINE</td>
+</tr>
+<tr class="row-137 odd">
+	<td class="column-1">Trinidad and Tobago</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-138 even">
+	<td class="column-1">Tunisia</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-139 odd">
+	<td class="column-1">(Türkiye) Turkey</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-140 even">
+	<td class="column-1">Turkmenistan</td><td class="column-2">*ICQ Video Calls &amp; Chat Rooms</td>
+</tr>
+<tr class="row-141 odd">
+	<td class="column-1">Uganda</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-142 even">
+	<td class="column-1">Ukraine</td><td class="column-2">Viber</td>
+</tr>
+<tr class="row-143 odd">
+	<td class="column-1">United Arab Emirates (UAE)</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-144 even">
+	<td class="column-1">United Kingdom (UK)</td><td class="column-2">WhatsApp</td>
+</tr>
+<tr class="row-145 odd">
+	<td class="column-1">United States of America (USA)</td><td class="column-2">Facebook Messenger</td>
+</tr>
+<tr class="row-146 even">
+	<td class="column-1">Uruguay</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-147 odd">
+	<td class="column-1">Uzbekistan</td><td class="column-2">*Telegram Messenger</td>
+</tr>
+<tr class="row-148 even">
+	<td class="column-1">Venezuela</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-149 odd">
+	<td class="column-1">Vietnam</td><td class="column-2">Zalo</td>
+</tr>
+<tr class="row-150 even">
+	<td class="column-1">Yemen</td><td class="column-2">*WhatsApp</td>
+</tr>
+<tr class="row-151 odd">
+	<td class="column-1">Zambia</td><td class="column-2">*Facebook Messenger</td>
+</tr>
+<tr class="row-152 even">
+	<td class="column-1">Zimbabwe</td><td class="column-2">*WhatsApp</td>
+</tr>
+</tbody>
+</table>'
+```
+
+```{r}
+# Parse the HTML content
+soup <- read_html(html_content)
+table <- html_node(soup, '#tablepress-2')
+
+# Extract the rows from the table
+rows <- html_nodes(table, 'tr')
+
+# Open a CSV file for writing
+output_file <- 'output.csv'
+csv_data <- data.frame(Country = character(), MessagingApp = character(), stringsAsFactors = FALSE)
+
+for (i in 2:length(rows)) {  # Skip the header row
+    cols <- html_nodes(rows[i], 'td')
+    if (length(cols) == 2) {
+        country <- html_text(cols[1], trim = TRUE)
+        app <- gsub('^\\*', '', html_text(cols[2], trim = TRUE))
+        csv_data <- rbind(csv_data, data.frame(Country = country, MessagingApp = app, stringsAsFactors = FALSE))
+    }
+}
+
+# Write the data to a CSV file
+write_csv(csv_data, output_file)
+```
+
+Most of the data is from the EagerNomad website \[1\]. One of the messaging app labels, 'ICQ Video Calls & Chat Rooms,' has been renamed to 'ICQ' as the label is too long to be stated in the legend. Missing data has been added manually from reliable online resources and articles such as Appfigures and SimilarWeb, which are listed below.
+
+References:
+
+1.  <https://eagernomad.com/most-popular-messaging-apps-by-country/>
+2.  https://www.similarweb.com/top-apps/google/bangladesh/communication/
+3.  https://surfiran.com/mag/internet-in-iran-and-useful-mobile-apps/
+4.  https://www.dailynk.com/english/north-koreans-turn-to-wechat-for-videos-and-cross-border-communication/
+5.  https://havanatimes.org/features/how-are-cubans-communicating-these-days/
+6.  <https://www.weforum.org/agenda/2018/02/why-whatsapp-is-the-most-popular-messaging-app-in-africa/>
+7.  https://medialandscapes.org/country/syria/telecommunications/main-trends
+8.  https://app.sensortower.com/top-charts?category=communication&country=MG&os=android&date=2024-06-14&device=iphone
+9.  https://www.linkedin.com/pulse/future-telegram-open-networkton-blockchain-ethiopia-dawit-mengistu/
+10. https://appfigures.com/top-apps/google-play/côte-d’ivoire/communication?profile=product.41279583613
+11. <https://www.similarweb.com/top-apps/apple/burkina-faso/social-networking/>
