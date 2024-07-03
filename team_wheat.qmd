@@ -46,16 +46,23 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 # Strengths of original visualization
 
 1. **Clear Title**: The title "Top messaging apps by country" is concise and immediately informs the viewer of the poster's content.
+   
 2. **Global Coverage**: The map covers the entire world, providing a comprehensive view of the data across different regions.
+   
 3. **Color-Coding and Legend**: The use of color-coding to represent different messaging apps is a useful visual aid. The legend on the left side provides a quick reference for understanding which color corresponds to which app.
 
 # Suggested Improvements
 
 1. **Enhance Legend Clarity**: The previous visualization uses a colour-coded map corresponding to the application icons colours in the legend. Several icons shared similar colours, leading to confusion about which colour was associated with each application. Replace the icons in the legend with distinct colours to improve visual clarity and differentiation.
+   
 2. **Colour-Blind Friendly Palette**: Use a colour-blind friendly palette to ensure the map is accessible to all viewers. The colour palette should be chosen from the qualitative schemes as they are best suited to representing nominal or categorical data (like message applications).
+   
 3. **Clear Title and Description**: Update the title to be more descriptive, such as "Most Popular Messaging Apps by Country (June 2024)". Include a subtitle explaining the criteria for determining the most popular application.
+   
 4. **Data Source Visibility**: Place the data source information more prominently in the footer to ensure it's easily visible.
+   
 5. **Include Scaled Circle Legend**: Add a circle legend plot in corresponding legend colours, scaled to the percentage representing overall application popularity, for better visual representation of application usage.
+   
 6. **Use of Borders and Labels**: Ensure country borders are clear and labeled appropriately to help viewers easily identify regions. Include ISO country codes to assist with identification.
 
 # Implementation
@@ -64,15 +71,37 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 
 Most popular messaging apps per country data were obtained from Eager Nomad[^eager_nomand]. The missing data were obtained from Appfigures[^appfigures] and Similar Web[^similar_web].
 
+**Preprocessing**
+
+`HTML` `Table` data is copied manually from Eager Nomad website. It is processed with the Quarto publication framework and the `R` programming language, along with the following third-party packages:
+
+1. `rvest` is used to parse `HTML` data
+
+2. `dylr` is used to filter data
+
+3. `readr` is used to write data to `CSV` file
+
+The data is cleaned and transformed to create a `CSV` dataset that can be visualized on a world map.
+
 **Software** 
 
-We used the Quarto publication framework and the R programming language, along with the following third-party packages: 
+We used the Quarto publication framework and the `R` programming language, along with the following third-party packages: 
 
 1. Read imported data 
+   
 2. `tidyverse` is used to filter data, join data frames, and transform spatial data.
+   
 3. `sf` is used for handling and analyzing spatial data
+   
 4. `scales` for scaling and formatting data for visualization, such as adjusting Earth’s boundaries
-5. `RColorBrewer` for selecting colour scheme for the map
+
+5. `tmap` for world map data visualization
+   
+6. `RColorBrewer` for selecting colour scheme for the map
+   
+7. `cowplot` for combining multiple plots into a single visualization
+
+The improved visualization is created using the `ggplot2` package to generate the world map and the `cowplot` package to combine the main plot with the scaled circle legend plot.
 
 [^eager_nomand]: https://eagernomad.com/most-popular-messaging-apps-by-country/
 
@@ -177,7 +206,14 @@ print(final_plot)
 
 # Further Suggestions for Interactivity
 
-Since our visualization was intended for a real-life poster, interactive features were not implemented. However, if visualized in an HTML document, interactive elements could enhance user engagement. Users could hover over or click on countries to see detailed information about the top messaging app in that region, including usage statistics and growth trends. A time slider could show changes in app popularity over time, while comparison tools would enable side-by-side analysis of different regions. An interactive legend that highlights specific apps' dominance globally when clicked, and ensuring mobile compatibility, would make the data more accessible. Dynamic charts and graphs that update based on user interactions with the map would provide clearer data representation, and offering the poster in multiple languages would cater to a diverse audience.
+1. **Country-Level Details**: Users could hover over or click on countries to see detailed information about the top messaging app in that region. This could include usage statistics and growth trends for the top app.
+
+2. **Time-Based Trends**: A time slider could be added to show changes in app popularity over time.
+
+3. **Interactive Legend**: An interactive legend that highlights specific apps' dominance globally when clicked.
+
+4. **Mobile Compatibility**: Ensure that the interactive features are mobile-friendly for users accessing the visualization on smartphones or tablets.
 
 # Conclusion
+
 We successfully implemented all suggested improvements for the non-interactive visualization. By using distinct colors in the legend and a color-blind friendly palette, the revised plot is more accessible. Enhancements like a clear title and description, prominent data source visibility, and the inclusion of a scaled circle legend improve clarity and understanding. The use of clear country borders and labels with ISO codes helps viewers easily identify regions. These improvements ensure that the visualization is more informative and user-friendly, effectively highlighting global communication trends.
