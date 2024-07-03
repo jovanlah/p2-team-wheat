@@ -1,0 +1,53 @@
+---
+title: "data-preparation"
+format: html
+editor: visual
+---
+
+```{r}
+# import libraries
+library(rvest)
+library(dplyr)
+library(readr)
+```
+
+```{r}
+# Parse the HTML content
+soup <- read_html("./data/raw.html")
+table <- html_node(soup, "#tablepress-2")
+
+# Extract the rows from the table
+rows <- html_nodes(table, "tr")
+
+# Open a CSV file for writing
+output_file <- "./data/output.csv"
+csv_data <- data.frame(Country = character(), Messaging_App = character(), stringsAsFactors = FALSE)
+
+for (i in 2:length(rows)) { # Skip the header row
+    cols <- html_nodes(rows[i], "td")
+    if (length(cols) == 2) {
+        country <- html_text(cols[1], trim = TRUE)
+        app <- gsub("^\\*", "", html_text(cols[2], trim = TRUE))
+        csv_data <- rbind(csv_data, data.frame(Country = country, Messaging_App = app, stringsAsFactors = FALSE))
+    }
+}
+
+# Write the data to a CSV file
+write_csv(csv_data, output_file)
+```
+
+Most of the data is from the EagerNomad website \[1\]. One of the messaging app labels, 'ICQ Video Calls & Chat Rooms,' has been renamed to 'ICQ' as the label is too long to be stated in the legend. Missing data has been added manually from reliable online resources and articles such as Appfigures and SimilarWeb, which are listed below.
+
+References:
+
+1.  <https://eagernomad.com/most-popular-messaging-apps-by-country/>
+2.  https://www.similarweb.com/top-apps/google/bangladesh/communication/
+3.  https://surfiran.com/mag/internet-in-iran-and-useful-mobile-apps/
+4.  https://www.dailynk.com/english/north-koreans-turn-to-wechat-for-videos-and-cross-border-communication/
+5.  https://havanatimes.org/features/how-are-cubans-communicating-these-days/
+6.  <https://www.weforum.org/agenda/2018/02/why-whatsapp-is-the-most-popular-messaging-app-in-africa/>
+7.  https://medialandscapes.org/country/syria/telecommunications/main-trends
+8.  https://app.sensortower.com/top-charts?category=communication&country=MG&os=android&date=2024-06-14&device=iphone
+9.  https://www.linkedin.com/pulse/future-telegram-open-networkton-blockchain-ethiopia-dawit-mengistu/
+10. https://appfigures.com/top-apps/google-play/côte-d’ivoire/communication?profile=product.41279583613
+11. <https://www.similarweb.com/top-apps/apple/burkina-faso/social-networking/>
