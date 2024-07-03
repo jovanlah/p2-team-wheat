@@ -67,11 +67,11 @@ The poster titled "Top Messaging Apps by Country" provides a global overview of 
 
 # Implementation
 
-**Data** 
+## Data
 
 Most popular messaging apps per country data were obtained from Eager Nomad[^eager_nomand]. The missing data were obtained from Appfigures[^appfigures] and Similar Web[^similar_web].
 
-**Preprocessing**
+## Preprocessing
 
 `HTML` `Table` data is copied manually from Eager Nomad website. It is processed with the Quarto publication framework and the `R` programming language, along with the following third-party packages:
 
@@ -83,7 +83,7 @@ Most popular messaging apps per country data were obtained from Eager Nomad[^eag
 
 The data is cleaned and transformed to create a `CSV` dataset that can be visualized on a world map.
 
-**Software** 
+## Software 
 
 We used the Quarto publication framework and the `R` programming language, along with the following third-party packages: 
 
